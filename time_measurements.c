@@ -4,6 +4,11 @@
 #include <signal.h>
 #include <unistd.h>
 
+/*
+ * Measuring time difference given
+ * a number of samples and the sampling period
+ */
+
 /* This flag controls termination of the main loop. */
 volatile sig_atomic_t iteration;
 struct timeval timestamp;
