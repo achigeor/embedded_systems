@@ -42,7 +42,7 @@ int main (int argc,char *argv[])
     timestamps= (double *) malloc((samples)*sizeof(double));
     sampling_period=atof(argv[2]);
     char* filename = argv[3];
-    printf("You chose %d samples and %f sampling_period \n",samples, sampling_period);
+    printf("You chose %d samples and %f sampling_period \n seconds",samples, sampling_period);
 
     /* Set an alarm to go off in <sampling_period> seconds. */
     /* ualarm can only hold values up to 1.000.000, i.e. 1 sec*/
