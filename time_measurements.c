@@ -20,12 +20,12 @@ double sampling_period;
 void catch_alarm (int sig)
 {
     gettimeofday(&timestamp,NULL);
-    timestamps[samples-iteration+1]=timestamp.tv_sec*1000+timestamp.tv_usec/1000; // store timestamps in milliseconds
+    timestamps[samples-iteration]=timestamp.tv_sec*1000+timestamp.tv_usec/1000; // store timestamps in milliseconds
 
     iteration--;
     signal (sig, catch_alarm);
     /* ualarm can only hold values up to 1.000.000, i.e. 1 sec*/
-    if (sampling_period<1){
+    if (sampling_period <1){
         ualarm(sampling_period*1000000,0);
     }
     else{
@@ -42,13 +42,11 @@ int main (int argc,char *argv[])
     timestamps= (double *) malloc((samples)*sizeof(double));
     sampling_period=atof(argv[2]);
 
-    printf("to samples einai %d kai to sampling_period einai %f \n",samples, sampling_period);
-    gettimeofday(&timestamp,NULL);
-    timestamps[0]=timestamp.tv_sec*1000+timestamp.tv_usec/1000; // store timestamps in milliseconds
+    printf("You chose %d samples and %f sampling_period \n",samples, sampling_period);
 
     /* Set an alarm to go off in <sampling_period> seconds. */
     /* ualarm can only hold values up to 1.000.000, i.e. 1 sec*/
-    if (sampling_period<1){
+    if (sampling_period <1){ // todo make it work with doubles more than 1 sec
         ualarm(sampling_period*1000000,0);
     }
     else{
@@ -61,15 +59,17 @@ int main (int argc,char *argv[])
     }
 
     FILE *f = fopen("time_deltas.txt", "w");
-    if (f == NULL)
+    FILE *f2 = fopen("deltas_only.txt", "w");
+    if (f == NULL || f2 ==NULL)
     {
         printf("Error opening file!\n");
         exit(1);
     }
 
     int i;
-    for(i=1; i<=samples; i++){
-        fprintf(f, "Sample: %d, delta: %f\n", i, timestamps[i]-timestamps[i-1]);
+    for(i=1; i<=samples-1; i++){
+        fprintf(f, "Time difference between sample %d and %d, delta: %f\n", i,i-1, timestamps[i]-timestamps[i-1]);
+        fprintf(f2,"%f\n", timestamps[i]-timestamps[i-1]);
     }
 
     free(timestamps);
