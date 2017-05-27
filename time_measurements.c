@@ -41,7 +41,7 @@ int main (int argc,char *argv[])
     samples = atoi(argv[1]); // pollaplasia tou 5 vgazoun koulo error??
     timestamps= (double *) malloc((samples)*sizeof(double));
     sampling_period=atof(argv[2]);
-
+    char* filename = argv[3];
     printf("You chose %d samples and %f sampling_period \n",samples, sampling_period);
 
     /* Set an alarm to go off in <sampling_period> seconds. */
@@ -59,7 +59,7 @@ int main (int argc,char *argv[])
     }
 
     FILE *f = fopen("time_deltas.txt", "w");
-    FILE *f2 = fopen("deltas_only.txt", "w");
+    FILE *f2 = fopen(filename, "w");
     if (f == NULL || f2 ==NULL)
     {
         printf("Error opening file!\n");
