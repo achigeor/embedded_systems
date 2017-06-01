@@ -65,11 +65,9 @@ int main (int argc,char *argv[])
 
     /* Check the flag once in <sampling_period> seconds to see when to quit. */
     while (iteration && sampling_period<1){
-        printf("xaxa");
         usleep(sampling_period*1000000); // we sleep while counting to save resources!
     }
     while (iteration && sampling_period>=1){
-        printf("mpika");
         sleep(sampling_period); // we sleep while counting to save resources!
     }
 
