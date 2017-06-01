@@ -35,6 +35,15 @@ void catch_alarm (int sig)
 
 int main (int argc,char *argv[])
 {
+    if (argc != 4) { // Check if the command line arguments are correct
+        printf("Usage: %s S SP FN\n"
+                       "where\n"
+                       "  S     : number of samples\n"
+                       "  SP    : sampling period\n"
+                       "  FN    : txt filename to save output\n",argv[0]);
+        return (1);
+    }
+
     /* Establish a handler for SIGALRM signals. */
     signal (SIGALRM, catch_alarm);
     iteration= atoi(argv[1]);
@@ -42,7 +51,8 @@ int main (int argc,char *argv[])
     timestamps= (double *) malloc((samples)*sizeof(double));
     sampling_period=atof(argv[2]);
     char* filename = argv[3];
-    printf("You chose %d samples and %f sampling_period \n seconds",samples, sampling_period);
+
+    printf("You chose %d samples and %f seconds as sampling_period \n",samples, sampling_period);
 
     /* Set an alarm to go off in <sampling_period> seconds. */
     /* ualarm can only hold values up to 1.000.000, i.e. 1 sec*/
@@ -54,8 +64,13 @@ int main (int argc,char *argv[])
     }
 
     /* Check the flag once in <sampling_period> seconds to see when to quit. */
-    while (iteration){
+    while (iteration && sampling_period<1){
+        printf("xaxa");
         usleep(sampling_period*1000000); // we sleep while counting to save resources!
+    }
+    while (iteration && sampling_period>=1){
+        printf("mpika");
+        sleep(sampling_period); // we sleep while counting to save resources!
     }
 
     FILE *f = fopen("time_deltas.txt", "w");
